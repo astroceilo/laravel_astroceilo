@@ -151,7 +151,7 @@
                         if (res.ok) {
                             location.reload();
                         } else {
-                            alert('Gagal menghapus data');
+                            alert('Gagal menghapus data rumah sakit');
                         }
                     }).catch(err => {
                         alert('Terjadi kesalahan: ' + err);

@@ -11,10 +11,16 @@ class PatientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $patients  = Patient::with('hospital')->orderBy('id', 'desc')->paginate(10);
-        $hospitals = Hospital::orderBy('name')->get();
+        $patients  = Patient::with('hospital')
+            ->when($request->hospital_id, function ($query) use ($request) {
+                $query->where('hospital_id', $request->hospital_id);
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+        $hospitals = Hospital::all();
         return view('patients.index', compact('patients', 'hospitals'));
     }
 
@@ -31,7 +37,16 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'address'     => 'required|string',
+            'phone'       => 'required|string|max:20',
+            'hospital_id' => 'required|exists:hospitals,id',
+        ]);
+
+        Patient::create($request->all());
+
+        return redirect()->route('patients.index')->with('success', 'Pasien berhasil ditambahkan.');
     }
 
     /**
@@ -55,7 +70,18 @@ class PatientController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'address'     => 'required|string',
+            'phone'       => 'required|string|max:20',
+            'hospital_id' => 'required|exists:hospitals,id',
+        ]);
+
+        $patient->update($request->all());
+
+        return redirect()->route('patients.index')->with('success', 'Pasien berhasil diperbarui.');
     }
 
     /**
@@ -63,6 +89,9 @@ class PatientController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+        $patient->delete();
+
+        return response()->json(['success' => true]);
     }
 }

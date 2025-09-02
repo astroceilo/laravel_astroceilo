@@ -58,11 +58,51 @@
                     @endforeach
                 </tbody>
             </table>
+            {{ $patients->links() }}
         </div>
     </div>
 
+    <!-- Modal Tambah -->
+    <div class="modal fade" id="addPatientModal" tabindex="-1">
+        <div class="modal-dialog">
+            <form action="{{ route('patients.store') }}" method="POST" class="modal-content">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Pasien</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Pasien</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Alamat</label>
+                        <textarea name="address" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Telepon</label>
+                        <input type="text" name="phone" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rumah Sakit</label>
+                        <select name="hospital_id" class="form-select" required>
+                            <option value="">-- Pilih Rumah Sakit --</option>
+                            @foreach ($hospitals as $hospital)
+                                <option value="{{ $hospital->id }}">{{ $hospital->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
     @foreach ($patients as $patient)
-        {{-- Modal Edit --}}
         <div class="modal fade" id="editPatientModal{{ $patient->id }}" tabindex="-1">
             <div class="modal-dialog">
                 <form action="{{ route('patients.update', $patient->id) }}" method="POST" class="modal-content">
@@ -105,46 +145,6 @@
             </div>
         </div>
     @endforeach
-
-
-    {{-- Modal Tambah --}}
-    <div class="modal fade" id="addPatientModal" tabindex="-1">
-        <div class="modal-dialog">
-            <form action="{{ route('patients.store') }}" method="POST" class="modal-content">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Pasien</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Nama Pasien</label>
-                        <input type="text" name="nama" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Alamat</label>
-                        <textarea name="alamat" class="form-control"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Telepon</label>
-                        <input type="text" name="telepon" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Rumah Sakit</label>
-                        <select name="hospital_id" class="form-select" required>
-                            <option value="">-- Pilih Rumah Sakit --</option>
-                            @foreach ($hospitals as $hospital)
-                                <option value="{{ $hospital->id }}">{{ $hospital->nama }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
 @endsection
 
 @push('scripts')
@@ -152,7 +152,7 @@
         // Delete pakai Ajax
         document.querySelectorAll('.btn-delete').forEach(btn => {
             btn.addEventListener('click', function() {
-                if (confirm('Yakin hapus rumah sakit ini?')) {
+                if (confirm('Yakin hapus pasien ini?')) {
                     fetch(`/patients/${this.dataset.id}`, {
                         method: 'DELETE',
                         headers: {
@@ -163,19 +163,26 @@
                         if (res.ok) {
                             location.reload();
                         } else {
-                            alert('Gagal menghapus data');
+                            alert('Gagal menghapus data pasien');
                         }
                     }).catch(err => {
-                        alert('Terjadi kesalahan: ' + err);
+                        console.error(err);
+                        alert('Terjadi kesalahan ' + err);
                     });
                 }
             });
         });
 
-        // Filter Rumah Sakit (Ajax bisa ditambahkan nanti)
+        // Filter Rumah Sakit pakai Ajax
         document.getElementById('filterHospital').addEventListener('change', function() {
-            let hospitalId = this.value;
-            window.location.href = hospitalId ? `?hospital_id=${hospitalId}` : `{{ route('patients.index') }}`;
+            const hospitalId = this.value;
+            const baseUrl = @json(route('patients.index'));
+
+            if (hospitalId) {
+                window.location.href = `${baseUrl}?hospital_id=${hospitalId}`;
+            } else {
+                window.location.href = baseUrl;
+            }
         });
     </script>
 @endpush

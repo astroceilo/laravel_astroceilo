@@ -12,7 +12,7 @@ class HospitalController extends Controller
      */
     public function index()
     {
-        $hospitals = Hospital::orderBy('id', 'desc')->paginate(10);
+        $hospitals = Hospital::latest()->paginate(10);
         return view('hospitals.index', compact('hospitals'));
     }
 

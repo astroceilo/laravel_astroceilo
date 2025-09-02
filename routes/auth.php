@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('patients', PatientController::class);
 
-    Route::delete('/patients/{id}', [PatientController::class, 'destroy'])->name('patients.destroy.ajax');
+    // Route::delete('/patients/{id}', [PatientController::class, 'destroy'])->name('patients.destroy.ajax');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
