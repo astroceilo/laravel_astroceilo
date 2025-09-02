@@ -152,7 +152,7 @@
         // Delete pakai Ajax
         document.querySelectorAll('.btn-delete').forEach(btn => {
             btn.addEventListener('click', function() {
-                if (confirm('Yakin hapus pasien ini?')) {
+                if (confirm('Yakin hapus rumah sakit ini?')) {
                     fetch(`/patients/${this.dataset.id}`, {
                         method: 'DELETE',
                         headers: {
@@ -161,10 +161,12 @@
                         }
                     }).then(res => {
                         if (res.ok) {
-                            document.getElementById(`row-${this.dataset.id}`).remove();
+                            location.reload();
                         } else {
                             alert('Gagal menghapus data');
                         }
+                    }).catch(err => {
+                        alert('Terjadi kesalahan: ' + err);
                     });
                 }
             });

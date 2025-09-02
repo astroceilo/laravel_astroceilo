@@ -29,7 +29,16 @@ class HospitalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'    => 'required|string|max:255',
+            'address' => 'required|string',
+            'email'   => 'required|email|unique:hospitals,email',
+            'phone'   => 'required|string|max:20',
+        ]);
+
+        Hospital::create($request->all());
+
+        return redirect()->route('hospitals.index')->with('success', 'Rumah Sakit berhasil ditambahkan.');
     }
 
     /**
@@ -53,7 +62,18 @@ class HospitalController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $hospital = Hospital::findOrFail($id);
+
+        $request->validate([
+            'name'    => 'required|string|max:255',
+            'address' => 'required|string',
+            'email'   => 'required|email|unique:hospitals,email,' . $hospital->id,
+            'phone'   => 'required|string|max:20',
+        ]);
+
+        $hospital->update($request->all());
+
+        return redirect()->route('hospitals.index')->with('success', 'Rumah Sakit berhasil diperbarui.');
     }
 
     /**
@@ -61,6 +81,17 @@ class HospitalController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $hospital = Hospital::findOrFail($id);
+        $hospital->delete();
+
+        $currentPage = request()->get('page', 1);
+        $paginator   = Hospital::paginate(10, ['*'], 'page', $currentPage);
+
+        return response()->json([
+            'success'     => true,
+            'currentPage' => $currentPage,
+            'lastPage'    => $paginator->lastPage(),
+            'empty'       => $paginator->isEmpty()
+        ]);
     }
 }
