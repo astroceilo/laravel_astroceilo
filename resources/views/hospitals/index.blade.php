@@ -16,7 +16,7 @@
             <table class="table table-striped align-middle">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>No</th>
                         <th>Nama Rumah Sakit</th>
                         <th>Alamat</th>
                         <th>Email</th>
@@ -45,6 +45,8 @@
                     @endforeach
                 </tbody>
             </table>
+            <!-- Pagination -->
+            {{ $hospitals->links() }}
         </div>
     </div>
 

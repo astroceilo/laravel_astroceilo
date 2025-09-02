@@ -29,7 +29,7 @@
             <table class="table table-striped align-middle">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>No</th>
                         <th>Nama Pasien</th>
                         <th>Alamat</th>
                         <th>No Telepon</th>

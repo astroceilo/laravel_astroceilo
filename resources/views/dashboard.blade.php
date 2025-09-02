@@ -28,32 +28,37 @@
     </div>
 
     <!-- Table Example -->
+    {{-- <div class="card"> --}}
     <div class="card shadow-sm border-0 rounded-3">
-        <div class="card-header bg-white">
+        <div class="card-header">
             <h5 class="mb-0">Activity Logs</h5>
         </div>
-        <div class="card-body">
-            <table class="table table-striped table-hover">
+        <div class="card-body table-responsive">
+            <table class="table table-striped align-middle">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>No</th>
                         <th>Activity</th>
                         <th>User</th>
                         <th>Time</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach ($logs as $log)
+                    @forelse ($logs as $log)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $log->activity }}</td>
                             <td>{{ $log->user->username }}</td>
                             <td>{{ $log->created_at->format('d M Y H:i') }}</td>
                         </tr>
-                    @endforeach --}}
-
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">Belum ada activity</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
     </div>
+    {{-- </div> --}}
 @endsection

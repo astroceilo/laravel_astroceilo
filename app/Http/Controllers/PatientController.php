@@ -13,7 +13,7 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $patients  = Patient::with('hospital')->orderBy('id', 'desc')->get();
+        $patients  = Patient::with('hospital')->orderBy('id', 'desc')->paginate(10);
         $hospitals = Hospital::orderBy('name')->get();
         return view('patients.index', compact('patients', 'hospitals'));
     }
