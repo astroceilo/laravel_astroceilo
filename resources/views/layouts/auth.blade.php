@@ -11,7 +11,7 @@
 
     <!-- Script -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @vite(['resources/css/auth.css', 'resources/js/color-modes.js'])
+    {{-- @vite(['resources/css/auth.css', 'resources/js/color-modes.js']) --}}
 </head>
 
 <body class="d-flex align-items-center py-4 bg-body-tertiary">

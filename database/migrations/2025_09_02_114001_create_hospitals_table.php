@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('hospitals', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('addres');
+            $table->text('address');
             $table->string('email')->unique();
-            $table->string('phone_number', 20);
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('phone', 20);
             $table->timestamps();
         });
     }

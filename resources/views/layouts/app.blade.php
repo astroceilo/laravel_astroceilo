@@ -11,7 +11,6 @@
 
     <!-- Script -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    {{-- @vite(['resources/css/sidebars.css', 'resources/js/color-modes.js']) --}}
 </head>
 
 <body class="d-flex align-items-center bg-body-tertiary">
@@ -99,6 +98,7 @@
         </div>
     </div>
 
+    @stack('scripts')
 </body>
 
 </html>

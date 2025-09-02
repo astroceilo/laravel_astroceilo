@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisteredController;
 
@@ -15,5 +17,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::resource('hospitals', HospitalController::class);
+
+    Route::resource('patients', PatientController::class);
+
+    Route::delete('/patients/{id}', [PatientController::class, 'destroy'])->name('patients.destroy.ajax');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

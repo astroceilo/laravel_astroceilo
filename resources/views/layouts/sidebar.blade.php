@@ -18,12 +18,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="#">
+                <a class="nav-link text-white" href="{{ route('hospitals.index') }}">
                     <i class="bi bi-hospital me-2"></i> Rumah Sakit
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="#">
+                <a class="nav-link text-white" href="{{ route('patients.index') }}">
                     <i class="bi bi-people me-2"></i> Pasien
                 </a>
             </li>
